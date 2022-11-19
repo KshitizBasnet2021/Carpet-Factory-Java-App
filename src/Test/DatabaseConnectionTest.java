@@ -28,21 +28,21 @@ public class DatabaseConnectionTest {
 
     // verifying that the db connection works
     @Test
-    @DisplayName("Check Database Connection")
+    @DisplayName("Check Database query executions")
     void DBSelect() throws SQLException {
         Statement statement = con.createStatement();
         statement.setQueryTimeout(30);  // set timeout to 30 sec.
         statement.executeUpdate("drop table if exists person");
-        statement.executeUpdate("create table person (id integer, name string)");
-        statement.executeUpdate("insert into person values(1, '45454')");
+        statement.executeUpdate("create table person (id integer, firstName string, lastName string )");
+        statement.executeUpdate("insert into person values(1, 'Test', 'User')");
 
         ResultSet rs = statement.executeQuery("select * from person where id = 1");
         String name;
         while (rs.next()) {
             // read the result set
-            name = rs.getString("name");
-            assertEquals("45454", name,
-                    "Should Match");
+            name = rs.getString("firstName");
+            assertEquals("Test", name,
+                    "Name Should Match");
         }
     }
 
