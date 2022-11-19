@@ -1,6 +1,6 @@
 package Test;
 
-import DatabaseConnection.DatabaseConnection;
+import Singleton.*;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
