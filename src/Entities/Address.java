@@ -43,7 +43,7 @@ public class Address {
         this.city = city;
     }
 
-    public void setCountry(String Country){
+    public void setCountry(String country){
         this.country = country;
     }
 

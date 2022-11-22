@@ -1,12 +1,15 @@
 package Test;
+import DatabaseActions.AddressTableActions;
 import Entities.Address;
 import Entities.Carpet;
 import Entities.Customer;
 import FacadePattern.*;
 
-import static org.junit.Assert.*;
+import Singleton.DatabaseConnection;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 public class FacadeTest {
@@ -14,7 +17,9 @@ public class FacadeTest {
     @DisplayName("Facade Testing")
     void FacadeTest()
     {
+        Connection con = DatabaseConnection.getInstance(false).getConnection();
         Address address = new Address("1 Fairway Dr", "Chicago", "Illinois", "USA", 60458);
+        AddressTableActions addressTableActions = new AddressTableActions(address, con);
         Customer customer = new Customer("Matt", "Test", 987654321, "test", "text", address );
         Carpet carpet = new Carpet("Test Carpet", 10.1, 8.0, "Fabric", 10);
         Order.OrderStatus pending = Order.OrderStatus.Completed;

@@ -35,7 +35,6 @@ public class Order {
 	public void setOrderStatus(OrderStatus type){
 		this.orderStatus = type;
 	}
-
 	public String toString() {
 		return description +"\n"+ getStatus() + "\n"+getHomeDelivery();
 	}

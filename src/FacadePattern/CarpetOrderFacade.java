@@ -3,7 +3,6 @@ import Entities.*;
 public class CarpetOrderFacade {
 	Order order;
 	Address address;
- 
 	public CarpetOrderFacade(Order order, Address address) {
 		this.order = order;
 		this.address = address;
