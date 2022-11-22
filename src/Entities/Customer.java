@@ -64,4 +64,20 @@ public class Customer {
     public void setAddress(Address address){
         this.address= address;
     }
+
+    public String toString(){
+        return ("First Name: "+first_name+
+                ", Last Name: "
+                +last_name+
+                ", Phone: "
+                +phone+
+                ", User Name:"+
+                user_name+
+                ", Address: "+
+                address.getLine1()+ ", "+address.getCity()+
+                ", "+ address.getState()+
+                ", "+address.getCountry()+
+                ", "+address.getZipCode()
+        );
+    }
 }

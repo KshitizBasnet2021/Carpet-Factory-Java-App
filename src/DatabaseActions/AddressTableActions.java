@@ -8,6 +8,8 @@ public class AddressTableActions extends  DatabaseManipulation {
     Statement statement;
     Address address;
 
+    int lastCreatedAddressId = 0;
+
     public AddressTableActions(Address address, Connection con) {
         this.con = con;
         this.address = address;
@@ -24,7 +26,7 @@ public class AddressTableActions extends  DatabaseManipulation {
     public void createTableIfNotExists() {
         try {
             statement.executeUpdate("create table IF NOT EXISTS Address (" +
-                    "Address_id integer PRIMARY KEY AUTOINCREMENT, " +
+                    "address_id integer PRIMARY KEY AUTOINCREMENT, " +
                     "line1 string, " +
                     "city string, " +
                     "state string, " +
@@ -36,7 +38,7 @@ public class AddressTableActions extends  DatabaseManipulation {
     }
 
     @Override
-    public void add() {
+    public int add() {
         try {
             PreparedStatement st = con.prepareStatement("insert into Address(line1,city,state,country,zipCode) values(?,?,?,?,?)");
             st.setString(1, address.getLine1());
@@ -45,9 +47,13 @@ public class AddressTableActions extends  DatabaseManipulation {
             st.setString(4, address.getCountry());
             st.setString(5, address.getZipCode().toString());
             st.executeUpdate();
-        } catch (Exception e) {
-            System.out.println(e);
+            this.lastCreatedAddressId = (int) st.getGeneratedKeys().getLong(1);
+            return lastCreatedAddressId;
         }
+        catch (Exception e) {
+            System.out.println();
+        }
+        return 0;
     }
 
     @Override
@@ -82,8 +88,6 @@ public class AddressTableActions extends  DatabaseManipulation {
         try {
             PreparedStatement statement = con.prepareStatement("SELECT * FROM address");
             ResultSet rs = statement.executeQuery();
-            String name;
-
             while (rs.next()) {
                 // read the result set
                 String line1 = rs.getString("line1");

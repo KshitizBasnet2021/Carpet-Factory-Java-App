@@ -1,5 +1,7 @@
 package DatabaseActions;
+import Entities.Address;
 import Entities.Customer;
+import org.sqlite.SQLiteException;
 
 import java.sql.*;
 
@@ -8,9 +10,15 @@ public class CustomerTableActions extends  DatabaseManipulation {
     Statement statement;
     Customer customer;
 
+    Address address;
+
+    AddressTableActions addressTableActions;
+
     public CustomerTableActions(Customer customer, Connection con) {
         this.con = con;
         this.customer = customer;
+        this.address = customer.getAddress();
+        this.addressTableActions = new AddressTableActions(address, con);
         try {
             this.statement = con.createStatement();
             createTableIfNotExists();
@@ -27,28 +35,43 @@ public class CustomerTableActions extends  DatabaseManipulation {
                     "customer_id integer PRIMARY KEY AUTOINCREMENT, " +
                     "first_name string, " +
                     "last_name string, " +
-                    "phone int, " +
-                    "user_name string," +
-                    "password int)+" +
-                    "addressId int");
+                    "phone integer unique, " +
+                    "user_name string unique," +
+                    "password string, " +
+                    "address_Id integer, " +"CONSTRAINT fk_departments "+
+                    "FOREIGN KEY(address_Id) REFERENCES Address (Address_ID) ON UPDATE CASCADE ON DELETE SET NULL) ");
+
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     @Override
-    public void add() {
+    public int add() {
         try {
-            PreparedStatement st = con.prepareStatement("insert into customer(first_name,last_name,phone,username,password, address_Id) values(?,?,?,?,?,?)");
+            int createdAddressId = this.addressTableActions.add();
+            PreparedStatement st = con.prepareStatement("insert into customer(first_name,last_name,phone,user_name,password, address_Id) values(?,?,?,?,?,?)");
             st.setString(1, customer.getFirstName());
             st.setString(2, customer.getLastName());
             st.setInt(3, (Integer) customer.getPhone());
             st.setString(4, customer.getUserName());
-            st.setString(5, customer.getPassword().toString());
+            st.setString(5, customer.getPassword());
+            st.setInt(6, createdAddressId);
             st.executeUpdate();
-        } catch (Exception e) {
+            return (int) st.getGeneratedKeys().getLong(1);
+        }  catch(SQLiteException e)
+        {
+           if(e.getLocalizedMessage().contains("customer.user_name")){
+               System.out.println("This username is already present in the system");
+           };
+            if(e.getLocalizedMessage().contains("customer.phone")){
+                System.out.println("The phone number is is already entered in the system.");
+            };
+        }
+        catch (Exception e) {
             System.out.println(e);
         }
+        return 0;
     }
 
     @Override
@@ -90,21 +113,18 @@ public class CustomerTableActions extends  DatabaseManipulation {
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 // read the result set
-                String firstName = rs.getString("line1");
-                String lastName = rs.getString("city");
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
                 Number phone = rs.getInt("phone");
-                String username = rs.getString("userName");
-                System.out.println("First Name: "+firstName+
-                        ", Last Name: "
-                        +lastName+
-                        ", Phone: "
-                        +phone+
-                        ", User Name:"+
-                        username
-                        );
+                String username = rs.getString("user_name");
+                String address_id = rs.getString("address_id");
+                Address customerAddress = addressTableActions.getAddress(Integer.parseInt(address_id));
+                Customer customer = new Customer(firstName, lastName,phone, username, address_id, customerAddress);
+                System.out.println(customer);
             }
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             System.out.println(ex);
         }
     }
@@ -119,7 +139,26 @@ public class CustomerTableActions extends  DatabaseManipulation {
             String lastName = rs.getString("last_name");
             Number phone = rs.getInt("phone");
             String userName = rs.getString("user_name");
-            return new Customer(firstName, lastName, phone, userName,null,null);
+            String address_id = rs.getString("address_id");
+            Address customerAddress = addressTableActions.getAddress(Integer.parseInt(address_id));
+            return new Customer(firstName, lastName, phone, userName,null,customerAddress);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    public Customer getCustomer(String username) {
+        try {
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM customer where user_name = ?");
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            Number phone = rs.getInt("phone");
+            String userName = rs.getString("user_name");
+            String address_id = rs.getString("address_id");
+            Address customerAddress = addressTableActions.getAddress(Integer.parseInt(address_id));
+            return new Customer(firstName, lastName, phone, userName,null,customerAddress);
         } catch (Exception e) {
             System.out.println(e);
         }
