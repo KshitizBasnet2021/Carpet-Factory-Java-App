@@ -81,7 +81,7 @@ public class CustomerTableActions extends  DatabaseManipulation {
                     " first_name = ?," +
                     " last_name = ?," +
                     " phone = ?," +
-                    " user_name = ?" +
+                    " user_name = ?," +
                     " password = ?" +
                     " WHERE customer_id = ?");
             st.setString(1, customer.getFirstName());
@@ -91,23 +91,28 @@ public class CustomerTableActions extends  DatabaseManipulation {
             st.setString(5, customer.getPassword());
             st.setInt(6, customerID);
             st.executeUpdate();
+            //update address if any
+
         } catch (Exception e) {
             System.out.println(e);
         }
     }
-
+    public void update(int customerID, int addressId){
+        update(customerID);
+        this.addressTableActions.update(addressId);
+    }
     @Override
     public void delete(int customerID) {
         try {
-            PreparedStatement st = con.prepareStatement("Delete from customer WHERE customer_id = ?");
-            st.setInt(1, customerID);
+            PreparedStatement st = con.prepareStatement("Delete from customer WHERE customer_ID = ?");
+            st.setInt(1,customerID);
             st.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
-    public void printAllItems() {
+    public void printAll() {
         try {
             PreparedStatement statement = con.prepareStatement("SELECT * FROM customer");
             ResultSet rs = statement.executeQuery();
@@ -159,10 +164,42 @@ public class CustomerTableActions extends  DatabaseManipulation {
             String address_id = rs.getString("address_id");
             Address customerAddress = addressTableActions.getAddress(Integer.parseInt(address_id));
             return new Customer(firstName, lastName, phone, userName,null,customerAddress);
-        } catch (Exception e) {
+        } catch(NumberFormatException ex){
+            return  null;
+        }
+        catch (Exception e) {
             System.out.println(e);
         }
+
         return null;
+    }
+
+    public int getIDFromUserName(String username){
+        try {
+            PreparedStatement statement = con.prepareStatement("SELECT customer_id FROM customer where " +
+                    "user_name = ?");
+            statement.setString(1, username);
+            ResultSet rs = statement.executeQuery();
+            return rs.getInt("customer_id");
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return 0;
+    }
+
+    public int getCustomerAddressId(int customerId){
+        try {
+            PreparedStatement statement = con.prepareStatement("SELECT address_id FROM customer where customer_Id = ?");
+            statement.setInt(1, customerId);
+            ResultSet rs = statement.executeQuery();
+            int addressId = rs.getInt("address_id");
+            return addressId;
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return 0;
     }
 }
 

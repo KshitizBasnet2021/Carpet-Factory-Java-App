@@ -84,7 +84,7 @@ public class AddressTableActions extends  DatabaseManipulation {
         }
     }
 
-    public void printAllItems() {
+    public void printAll() {
         try {
             PreparedStatement statement = con.prepareStatement("SELECT * FROM address");
             ResultSet rs = statement.executeQuery();
