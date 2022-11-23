@@ -21,7 +21,7 @@ public class FacadeTest {
         Address address = new Address("1 Fairway Dr", "Chicago", "Illinois", "USA", 60458);
         AddressTableActions addressTableActions = new AddressTableActions(address, con);
         Customer customer = new Customer("Matt", "Test", 987654321, "test", "text", address );
-        Carpet carpet = new Carpet("Test Carpet", 10.1, 8.0, "Fabric", 10);
+        Carpet carpet = new Carpet(1, "Test Carpet", 10.1, 8.0, "Fabric", 10);
         Order.OrderStatus pending = Order.OrderStatus.Completed;
         boolean homeDelivery = true;
         CarpetOrderFacade customerOrderFacade =
