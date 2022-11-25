@@ -16,6 +16,31 @@ public class CartTableActions extends  DatabaseManipulation {
     public int getLastCreatedCartId(){
         return this.lastCreatedCartId;
     }
+    public int getCustomerId(){
+        return  this.orderId;
+    }
+    public int getOrderId(){
+        return  this.orderId;
+    }
+    public int getCarpetId(){
+        return  this.orderId;
+    }
+    public String getCustomerName(int customerId){
+        CustomerTableActions customerTableActions =new CustomerTableActions(null,con);
+        Customer customer = customerTableActions.getCustomer(customerId);
+        return customer.getFirstName()+" "+ customer.getLastName();
+    }
+
+    public String getOrderdCarpet(int carpetId){
+        CarpetTableActions carpetTableActions =new CarpetTableActions(null,con);
+        Carpet carpet = carpetTableActions.getCarpet(carpetId);
+        return carpet.toString();
+    }
+    public double getOrderdCarpetPrice(int carpetId){
+        CarpetTableActions carpetTableActions =new CarpetTableActions(null,con);
+        Carpet carpet = carpetTableActions.getCarpet(carpetId);
+        return carpet.getPrice();
+    }
     public CartTableActions(Connection con, int customerId, int orderId, int carpetId) {
         this.con = con;
         this.customerId = customerId;
@@ -119,7 +144,6 @@ public class CartTableActions extends  DatabaseManipulation {
                 int cartId = rs.getInt("Cart_id");
                 int customerId = rs.getInt("customer_id");
                 int carpetId = rs.getInt("carpet_id");
-                System.out.println(customerId);
                 carts.add(new Cart(cartId, customerId, carpetId, orderId));
             }
             return carts;

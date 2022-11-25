@@ -1,35 +1,37 @@
 package Test;
-import DatabaseActions.AddressTableActions;
+import DatabaseActions.*;
 import Entities.Address;
 import Entities.Carpet;
 import Entities.Customer;
 import FacadePattern.*;
 
 import Singleton.DatabaseConnection;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class FacadeTest {
     @Test
     @DisplayName("Facade Testing")
     void FacadeTest()
     {
         Connection con = DatabaseConnection.getInstance(false).getConnection();
-        Address address = new Address("1 Fairway Dr", "Chicago", "Illinois", "USA", 60458);
-        AddressTableActions addressTableActions = new AddressTableActions(address, con);
-        Customer customer = new Customer("Matt", "Test", 987654321, "test", "text", address );
-        Carpet carpet = new Carpet(1, "Test Carpet", 10.1, 8.0, "Fabric", 10);
-        Order.OrderStatus pending = Order.OrderStatus.Completed;
-        boolean homeDelivery = true;
-        CarpetOrderFacade customerOrderFacade =
-                new CarpetOrderFacade(new Order(customer, carpet, pending, homeDelivery), address);
-        assertEquals("Matt ordered Test Carpet\n" +
-                        "Completed Order\n" +
-                        "Customer Asked for Home Delivery",customerOrderFacade.orderCarpet(),
-                "Shot Glass should be ordered by user named Test");
+        //add customer
+        int customerId = 15;
 
+        //add carpet
+        Carpet carpet = new Carpet(1, "Test Carpet", 10.1, 8.0, "Fabric", 10);
+        CarpetTableActions carpetTableActions = new CarpetTableActions(carpet, con);
+        int carpetId = carpetTableActions.add();
+        //place an order
+        OrderTableActions orderTableActions = new OrderTableActions(con);
+        int orderId= orderTableActions.add();
+        CarpetOrderFacade customerOrderFacade =
+                new CarpetOrderFacade(new CarpetOrder(customerId,orderId,carpetId, con));
+        customerOrderFacade.orderCarpet();
+        Assertions.assertEquals("Carpet ID: " +carpetId+", Name: Test Carpet, Height: 10.1, Width: 8.0, Material: Fabric,Price: $10.0", customerOrderFacade.toString(),"Should be equal");
     }
 }

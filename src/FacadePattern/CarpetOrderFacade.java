@@ -1,29 +1,27 @@
 package FacadePattern;
 import Entities.*;
 public class CarpetOrderFacade {
-	Order order;
-	Address address;
-	public CarpetOrderFacade(Order order, Address address) {
-		this.order = order;
-		this.address = address;
+	CarpetOrder carpetOrder;
+
+	public CarpetOrderFacade(CarpetOrder carpetOrder) {
+		this.carpetOrder = carpetOrder;
 	}
  
-	public String orderCarpet() {
-		return (order.toString());
+	public void orderCarpet() {
+		carpetOrder.startOrder();
+		carpetOrder.getAllItemsInOrder();
 	}
 
 	public void changeDeliveryType(boolean type){
-		order.setDelivery(type);
+		carpetOrder.setDelivery(type);
 		orderCarpet();
 	}
-	public void changeStatusType(Order.OrderStatus type){
-		order.setOrderStatus(type);
+	public void changeStatusType(CarpetOrder.OrderStatus type){
+		carpetOrder.setOrderStatus(type);
 		orderCarpet();
 	}
-	public String getOrderAddress(){
-		return address.getLine1()+", "+ address.getCity()+ ", "+ address.getState() + ", "+ address.getCountry();
-	}
+
 	public String toString(){
-		return "Order:"+ order;
+		return carpetOrder.toString();
 	}
 }
