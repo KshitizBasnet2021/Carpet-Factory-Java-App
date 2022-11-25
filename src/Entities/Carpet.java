@@ -61,7 +61,8 @@ public class Carpet {
         this.price = price;
     }
     public String toString(){
-        return "Name: "+name +", "+
+        return "Carpet ID: " + carpetId+", "+
+                "Name: "+name +", "+
                 "Height: "+height+", "+
                 "Width: "+width+", "+
                 "Material: "+material+","+

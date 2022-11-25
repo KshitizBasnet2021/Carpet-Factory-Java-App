@@ -21,14 +21,17 @@ public class OrderTableActions extends  DatabaseManipulation {
         }
     }
 
-
+    public int getLastCreatedOrderId(){
+        return lastCreatedOrderId;
+    }
     //create
     public void createTableIfNotExists() {
         try {
-            statement.executeUpdate("create table IF NOT EXISTS Order (" +
-                    "order_id integer PRIMARY KEY AUTOINCREMENT" +
+            statement.executeUpdate("create table IF NOT EXISTS orders(" +
+                    "order_id integer PRIMARY KEY AUTOINCREMENT," +
                     "order_date date"+
                   ")");
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -37,7 +40,7 @@ public class OrderTableActions extends  DatabaseManipulation {
     @Override
     public int add() {
         try {
-            PreparedStatement st = con.prepareStatement("insert into Order(order_date) values(?)");
+            PreparedStatement st = con.prepareStatement("insert into orders(order_date) values(?)");
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
             st.setString(1,  dtf.format(now));
@@ -57,7 +60,7 @@ public class OrderTableActions extends  DatabaseManipulation {
     @Override
     public void delete(int orderId) {
         try {
-            PreparedStatement st = con.prepareStatement("Delete from order WHERE order_id = ?");
+            PreparedStatement st = con.prepareStatement("Delete from orders WHERE order_id = ?");
             st.setInt(1, orderId);
             st.executeUpdate();
         } catch (Exception e) {
@@ -67,7 +70,7 @@ public class OrderTableActions extends  DatabaseManipulation {
 
     public void printAll() {
         try {
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM order");
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM orders");
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 // read the result set
@@ -83,7 +86,7 @@ public class OrderTableActions extends  DatabaseManipulation {
     //Other functions
     public Order getOrder(int OrderId) {
         try {
-            PreparedStatement statement = con.prepareStatement("SELECT * FROM order where order_Id = ?");
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM orders where order_Id = ?");
             statement.setInt(1, OrderId);
             ResultSet rs = statement.executeQuery();
             int orderId = rs.getInt("order_id");

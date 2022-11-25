@@ -8,9 +8,7 @@ public class CarpetTableActions extends DatabaseManipulation{
     Connection con;
     Statement statement;
     Carpet carpet;
-
     int lastCreatedCarpetId = 0;
-
     public CarpetTableActions(Carpet carpet, Connection con) {
         this.con = con;
         this.carpet = carpet;
@@ -22,7 +20,9 @@ public class CarpetTableActions extends DatabaseManipulation{
         }
     }
 
-
+    public int getLastCreatedCarpetId(){
+        return lastCreatedCarpetId;
+    }
     //create
     public void createTableIfNotExists() {
         try {

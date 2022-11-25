@@ -7,7 +7,6 @@ public class AddressTableActions extends  DatabaseManipulation {
     Connection con;
     Statement statement;
     Address address;
-
     int lastCreatedAddressId = 0;
 
     public AddressTableActions(Address address, Connection con) {

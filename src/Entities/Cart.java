@@ -29,4 +29,8 @@ public class Cart {
     public int getCarpetIdId(){
         return carpetId;
     }
+
+    public String toString(){
+        return "Cart Id: "+ cartId + ", Order Id: "+ orderID + ", Customer Id: "+ customerId + ", CarpetId: "+carpetId;
+    }
 }

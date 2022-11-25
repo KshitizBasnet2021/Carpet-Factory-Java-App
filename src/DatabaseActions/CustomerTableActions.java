@@ -16,7 +16,12 @@ public class CustomerTableActions extends  DatabaseManipulation {
     public CustomerTableActions(Customer customer, Connection con) {
         this.con = con;
         this.customer = customer;
-        this.address = customer.getAddress();
+        if(customer == null){
+            this.address = null;
+        }else {
+            this.address = customer.getAddress();
+        }
+
         this.addressTableActions = new AddressTableActions(address, con);
         try {
             this.statement = con.createStatement();
@@ -37,7 +42,7 @@ public class CustomerTableActions extends  DatabaseManipulation {
                     "phone integer unique, " +
                     "user_name string unique," +
                     "password string, " +
-                    "address_Id integer, " +"CONSTRAINT fk_departments "+
+                    "address_Id integer, " +
                     "FOREIGN KEY(address_Id) REFERENCES Address (Address_ID) ON UPDATE CASCADE ON DELETE SET NULL) ");
 
         } catch (Exception e) {
@@ -123,7 +128,7 @@ public class CustomerTableActions extends  DatabaseManipulation {
                 String username = rs.getString("user_name");
                 String address_id = rs.getString("address_id");
                 Address customerAddress = addressTableActions.getAddress(Integer.parseInt(address_id));
-                Customer customer = new Customer(firstName, lastName,phone, username, address_id, customerAddress);
+                Customer customer = new Customer(firstName, lastName, phone, username, address_id, customerAddress);
                 System.out.println(customer);
             }
 

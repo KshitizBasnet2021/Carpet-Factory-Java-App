@@ -9,13 +9,18 @@ public class CartTableActions extends  DatabaseManipulation {
     Connection con;
     Statement statement;
     int lastCreatedCartId;
-
     int customerId;
     int orderId;
     int carpetId;
 
-    public CartTableActions(Connection con) {
+    public int getLastCreatedCartId(){
+        return this.lastCreatedCartId;
+    }
+    public CartTableActions(Connection con, int customerId, int orderId, int carpetId) {
         this.con = con;
+        this.customerId = customerId;
+        this.orderId = orderId;
+        this.carpetId = carpetId;
         try {
             this.statement = con.createStatement();
             createTableIfNotExists();
@@ -27,10 +32,14 @@ public class CartTableActions extends  DatabaseManipulation {
     public void createTableIfNotExists() {
         try {
             statement.executeUpdate("create table IF NOT EXISTS Cart (" +
-                    "Cart_id integer PRIMARY KEY AUTOINCREMENT" +
+                    "Cart_id integer PRIMARY KEY AUTOINCREMENT," +
                     "customer_id int,"+
-                    "carpet_id int," + "order_id int"+
+                    "carpet_id int," + "order_id int," +
+                    "FOREIGN KEY(carpet_id) REFERENCES carpet (carpet_id) ON UPDATE CASCADE ON DELETE SET NULL," +
+                    "FOREIGN KEY(customer_id) REFERENCES customer (customer_id) ON UPDATE CASCADE ON DELETE SET NULL," +
+                    "FOREIGN KEY(order_id) REFERENCES orders (order_id) ON UPDATE CASCADE ON DELETE SET NULL"+
                     ")");
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -40,9 +49,10 @@ public class CartTableActions extends  DatabaseManipulation {
     public int add() {
         try {
             PreparedStatement st = con.prepareStatement("insert into Cart(customer_id, carpet_id, order_id) values(?,?,?)");
-            st.setInt(1,customerId );
+            st.setInt(1, customerId );
             st.setInt(2, carpetId);
             st.setInt(3, orderId);
+            st.executeUpdate();
             this.lastCreatedCartId = (int) st.getGeneratedKeys().getLong(1);
             return this.lastCreatedCartId;
         }
@@ -76,7 +86,7 @@ public class CartTableActions extends  DatabaseManipulation {
                 int orderId = rs.getInt("order_id");
                 int customerId = rs.getInt("customer_id");
                 int carpetId = rs.getInt("carpet_id");
-                System.out.println("Cart ID: "+cartId+", Order Id: "+orderId+", Customer Id: "+ customerId +", Carpet Id"+carpetId);
+                System.out.println("Cart ID: "+cartId+", Order Id: "+orderId+", Customer Id: "+ customerId +", Carpet Id: "+carpetId);
             }
         } catch (Exception ex) {
             System.out.println(ex);
@@ -109,7 +119,8 @@ public class CartTableActions extends  DatabaseManipulation {
                 int cartId = rs.getInt("Cart_id");
                 int customerId = rs.getInt("customer_id");
                 int carpetId = rs.getInt("carpet_id");
-                carts.add(new Cart(cartId, orderId, customerId, carpetId));
+                System.out.println(customerId);
+                carts.add(new Cart(cartId, customerId, carpetId, orderId));
             }
             return carts;
         } catch (Exception e) {
