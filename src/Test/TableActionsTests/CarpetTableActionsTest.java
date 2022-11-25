@@ -18,27 +18,26 @@ public class CarpetTableActionsTest {
 
     @Test
     @DisplayName("Carpet Addition Test")
-    void TestCustomerCreation()
-    {
+    void TestCustomerCreation() {
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         Carpet carpet = new Carpet(0, "Test carpet", 10.1, 20.1, "Fabric", 20.0);
         CarpetTableActions carpetTableActions = new CarpetTableActions(carpet, con);
         int carpetId = carpetTableActions.add();
-        Assertions.assertEquals("Name: Test carpet, Height: 10.1, Width: 20.1, Material: Fabric,Price: $20.0",
+        Assertions.assertEquals("Carpet ID: " + carpetId + ", Name: Test carpet, Height: 10.1, Width: 20.1, Material: Fabric,Price: $20.0",
                 carpetTableActions.getCarpet(carpetId).toString());
     }
 
+
     @Test
     @DisplayName("Carpet Deletion Test")
-    void TestCustomerDeletion()
-    {
+    void TestCustomerDeletion() {
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         Carpet carpet = new Carpet(0, "Test carpet", 10.1, 20.1, "Fabric", 20.0);
         CarpetTableActions carpetTableActions = new CarpetTableActions(carpet, con);
         int carpetId = carpetTableActions.add();
         carpetTableActions.delete(carpetId);
         Carpet carpet1 = carpetTableActions.getCarpet(carpetId);
-        Assertions.assertEquals("Name: null, Height: 0.0, Width: 0.0, Material: null,Price: $0.0",carpet1.toString());
+        Assertions.assertEquals("Carpet ID: 0, Name: null, Height: 0.0, Width: 0.0, Material: null,Price: $0.0", carpet1.toString());
     }
 
     @Test
@@ -51,11 +50,11 @@ public class CarpetTableActionsTest {
        //create first
         int carpetId = carpetTableActions.add();
         Carpet carpet1 = carpetTableActions.getCarpet(carpetId);
-        Assertions.assertEquals("Name: Test carpet, Height: 10.1, Width: 20.1, Material: Fabric,Price: $20.0",carpet1.toString());
+        Assertions.assertEquals("Carpet ID: "+ carpetId+", Name: Test carpet, Height: 10.1, Width: 20.1, Material: Fabric,Price: $20.0",carpet1.toString());
         //then update
-        Carpet updatedcarpet = new Carpet(0, "Test carpet2", 10.1, 20.1, "Fabricz", 20.0);
+        Carpet updatedcarpet = new Carpet(carpetId, "Test carpet2", 10.1, 20.1, "Fabricz", 20.0);
         CarpetTableActions carpetTableAction = new CarpetTableActions(carpet, con);
         carpetTableAction.update(carpetId);
-        Assertions.assertEquals("Name: Test carpet2, Height: 10.1, Width: 20.1, Material: Fabricz,Price: $20.0",updatedcarpet.toString());
+        Assertions.assertEquals("Carpet ID: "+ carpetId+", Name: Test carpet2, Height: 10.1, Width: 20.1, Material: Fabricz,Price: $20.0",updatedcarpet.toString());
     }
 }
