@@ -9,7 +9,6 @@ public class CustomerTableActions extends  DatabaseManipulation {
     Connection con;
     Statement statement;
     Customer customer;
-
     Address address;
 
     AddressTableActions addressTableActions;

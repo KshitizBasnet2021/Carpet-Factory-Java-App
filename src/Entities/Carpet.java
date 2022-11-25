@@ -35,7 +35,7 @@ public class Carpet {
     public double getPrice(){
         return this.price;
     }
-    public double getCarpetId(){
+    public int getCarpetId(){
         return this.carpetId;
     }
 
