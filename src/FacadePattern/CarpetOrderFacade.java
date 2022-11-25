@@ -21,6 +21,10 @@ public class CarpetOrderFacade {
 		orderCarpet();
 	}
 
+	public void displayCarpetsinOrder(){
+		carpetOrder.displayAllItemsInOrder();
+	}
+
 	public String toString(){
 		return carpetOrder.toString();
 	}
