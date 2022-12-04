@@ -205,5 +205,21 @@ public class CustomerTableActions extends  DatabaseManipulation {
         }
         return 0;
     }
+
+    public int customerLogin(String username, String password){
+        try {
+            PreparedStatement statement = con.prepareStatement("SELECT customer_id FROM customer where " +
+                    "user_name = ? and password = ?");
+            statement.setString(1, username);
+            statement.setString(2, password);
+            ResultSet rs = statement.executeQuery();
+            int customerId = rs.getInt("customer_id");
+            return customerId;
+        }
+        catch (Exception e){
+            System.out.println(e);
+        }
+        return 0;
+    }
 }
 
