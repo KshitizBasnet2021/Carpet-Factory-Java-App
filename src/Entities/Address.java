@@ -50,4 +50,11 @@ public class Address {
     public void setZipCode(Number zipCode){
         this.zipCode = zipCode;
     }
+
+    public String toString(){
+        return  getLine1() + ", " + getCity() +
+                ", " + getState() +
+                ", " + getCountry() +
+                ", " + getZipCode();
+    }
 }

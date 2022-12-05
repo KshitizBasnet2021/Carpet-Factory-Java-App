@@ -65,6 +65,12 @@ public class Customer {
         this.address = address;
     }
 
+    public String getAddressString(){
+        if(this.address == null){
+            return "";
+        }
+        else return address.toString();
+    }
     public String toString() {
         return ("First Name: " + first_name +
                 ", Last Name: "
@@ -74,10 +80,7 @@ public class Customer {
                 ", User Name:" +
                 user_name +
                 ", Address: " +
-                address.getLine1() + ", " + address.getCity() +
-                ", " + address.getState() +
-                ", " + address.getCountry() +
-                ", " + address.getZipCode()
+                getAddressString()
         );
     }
 }
