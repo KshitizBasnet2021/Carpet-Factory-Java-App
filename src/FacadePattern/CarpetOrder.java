@@ -1,6 +1,9 @@
 package FacadePattern;
 import DatabaseActions.CartTableActions;
 import Entities.*;
+import Iterator.CommonList;
+import Iterator.Iterator;
+import Iterator.IteratorOutputs;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -46,10 +49,12 @@ public class CarpetOrder{
 	public void displayAllItemsInOrder(){
 		int orderId = this.cartTableAction.getOrderId();
 		ArrayList<Cart> carts = this.cartTableAction.getCartsFromOrderId(orderId);
-		System.out.println("The orders in the cart are as follows:");
-		for (int i = 0; i < carts.size(); i++) {
-			System.out.println(carts.get(i) + " ");
-		}
+		CommonList cartList = new CommonList(carts);
+		Iterator<Cart> cartListIterator = cartList.createIterator();
+
+		//just generate output of addresses
+		IteratorOutputs iteratorOutputs = new IteratorOutputs(cartListIterator);
+		iteratorOutputs.displayData();
 	}
 
 	public ArrayList<Cart> getAllItemsInOrder(){

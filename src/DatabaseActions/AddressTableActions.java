@@ -1,7 +1,11 @@
 package DatabaseActions;
 import Entities.Address;
+import Iterator.CommonList;
+import Iterator.Iterator;
+import Iterator.IteratorOutputs;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class AddressTableActions extends  DatabaseManipulation {
     Connection con;
@@ -87,14 +91,22 @@ public class AddressTableActions extends  DatabaseManipulation {
         try {
             PreparedStatement statement = con.prepareStatement("SELECT * FROM address");
             ResultSet rs = statement.executeQuery();
+            ArrayList<Address> addressArrayList = new ArrayList<>();
             while (rs.next()) {
                 // read the result set
                 String line1 = rs.getString("line1");
                 String city = rs.getString("city");
                 String state = rs.getString("state");
                 String country = rs.getString("country");
-                System.out.println("Line1: "+line1+", City: "+city+", State: "+state+", Country:"+country);
+                int zipCode = rs.getInt("country");
+                addressArrayList.add(new Address(line1, city, state, country,zipCode));
             }
+            CommonList addressList = new CommonList(addressArrayList);
+            Iterator<Address> addressListIterator = addressList.createIterator();
+
+            //just generate output of customers
+            IteratorOutputs iteratorOutputs = new IteratorOutputs(addressListIterator);
+            iteratorOutputs.displayData();
 
         } catch (Exception ex) {
             System.out.println(ex);

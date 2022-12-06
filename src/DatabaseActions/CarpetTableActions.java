@@ -1,8 +1,12 @@
 package DatabaseActions;
 
 import Entities.Carpet;
+import Iterator.CommonList;
+import Iterator.Iterator;
+import Iterator.IteratorOutputs;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class CarpetTableActions extends DatabaseManipulation{
     Connection con;
@@ -89,6 +93,7 @@ public class CarpetTableActions extends DatabaseManipulation{
         try {
             PreparedStatement statement = con.prepareStatement("SELECT * FROM Carpet");
             ResultSet rs = statement.executeQuery();
+            ArrayList<Carpet> carpetArrayList = new ArrayList<>();
             while (rs.next()) {
                 // read the result set
                 int carpetId = rs.getInt("carpet_Id");
@@ -98,8 +103,15 @@ public class CarpetTableActions extends DatabaseManipulation{
                 String material = rs.getString("material");
                 double price = rs.getDouble("price");
                 Carpet carpet = new Carpet(carpetId,name, height, width, material, price);
-                System.out.println(carpet);
+                carpetArrayList.add(carpet);
             }
+            //new
+            CommonList carpetList = new CommonList(carpetArrayList);
+            Iterator<Carpet> carpetListIterator = carpetList.createIterator();
+
+            IteratorOutputs iteratorOutputs = new IteratorOutputs(carpetListIterator);
+            iteratorOutputs.displayData();
+
 
         } catch (Exception ex) {
             System.out.println(ex);

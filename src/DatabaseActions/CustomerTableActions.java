@@ -1,9 +1,13 @@
 package DatabaseActions;
 import Entities.Address;
 import Entities.Customer;
+import Iterator.CommonList;
+import Iterator.IteratorOutputs;
+import Iterator.Iterator;
 import org.sqlite.SQLiteException;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class CustomerTableActions extends  DatabaseManipulation {
     Connection con;
@@ -120,6 +124,7 @@ public class CustomerTableActions extends  DatabaseManipulation {
         try {
             PreparedStatement statement = con.prepareStatement("SELECT * FROM customer");
             ResultSet rs = statement.executeQuery();
+            ArrayList<Customer> customerArrayList = new ArrayList<>();
             while (rs.next()) {
                 // read the result set
                 String firstName = rs.getString("first_name");
@@ -129,8 +134,15 @@ public class CustomerTableActions extends  DatabaseManipulation {
                 String address_id = rs.getString("address_id");
                 Address customerAddress = addressTableActions.getAddress(Integer.parseInt(address_id));
                 Customer customer = new Customer(firstName, lastName, phone, username, address_id, customerAddress);
-                System.out.println(customer);
+                customerArrayList.add(customer);
             }
+            //Iterator pattern in action
+            CommonList customerList = new CommonList(customerArrayList);
+            Iterator<Address> addressListIterator = customerList.createIterator();
+
+            //just generate output of customers
+            IteratorOutputs iteratorOutputs = new IteratorOutputs(addressListIterator);
+            iteratorOutputs.displayData();
 
         }
         catch (Exception ex) {

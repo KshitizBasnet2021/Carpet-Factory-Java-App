@@ -1,5 +1,8 @@
 package DatabaseActions;
 import Entities.*;
+import Iterator.CommonList;
+import Iterator.Iterator;
+import Iterator.IteratorOutputs;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -105,6 +108,7 @@ public class CartTableActions extends  DatabaseManipulation {
         try {
             PreparedStatement statement = con.prepareStatement("SELECT * FROM Cart");
             ResultSet rs = statement.executeQuery();
+            ArrayList<Cart> cartArrayList = new ArrayList<>();
             while (rs.next()) {
                 // read the result set
                 String cartId = rs.getString("Cart_id");
@@ -113,6 +117,13 @@ public class CartTableActions extends  DatabaseManipulation {
                 int carpetId = rs.getInt("carpet_id");
                 System.out.println("Cart ID: "+cartId+", Order Id: "+orderId+", Customer Id: "+ customerId +", Carpet Id: "+carpetId);
             }
+            //Iterator pattern in action
+            CommonList cartList = new CommonList(cartArrayList);
+            Iterator<Address> cartListIterator = cartList.createIterator();
+
+            //just generate output of customers
+            IteratorOutputs iteratorOutputs = new IteratorOutputs(cartListIterator);
+            iteratorOutputs.displayData();
         } catch (Exception ex) {
             System.out.println(ex);
         }
