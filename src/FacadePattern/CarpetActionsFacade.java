@@ -1,10 +1,12 @@
 package FacadePattern;
-import Entities.*;
-public class CarpetOrderFacade {
-	CarpetOrder carpetOrder;
 
-	public CarpetOrderFacade(CarpetOrder carpetOrder) {
+//sometimes searched carpet can be ordered automatically
+public class CarpetActionsFacade {
+	CarpetOrder carpetOrder;
+	CarpetSearch carpetSearch;
+	public CarpetActionsFacade(CarpetOrder carpetOrder, CarpetSearch carpetSearch) {
 		this.carpetOrder = carpetOrder;
+		this.carpetSearch = carpetSearch;
 	}
  
 	public void orderCarpet() {
@@ -20,11 +22,14 @@ public class CarpetOrderFacade {
 		carpetOrder.setOrderStatus(type);
 		orderCarpet();
 	}
-
 	public void displayCarpetsinOrder(){
 		carpetOrder.displayAllItemsInOrder();
 	}
 
+	//search
+	public void searchCarpet() {
+		carpetSearch.display();
+	}
 	public String toString(){
 		return carpetOrder.toString();
 	}

@@ -1,24 +1,27 @@
 package Test.TableActionsTests;
 
 import DatabaseActions.CarpetTableActions;
-import DatabaseActions.CustomerTableActions;
-import Entities.Address;
 import Entities.Carpet;
-import Entities.Customer;
 import Singleton.DatabaseConnection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.sql.Connection;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class CarpetTableActionsTest {
+    private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream err = new ByteArrayOutputStream();
 
+    void setStreams() {
+        System.setOut(new PrintStream(out));
+        System.setErr(new PrintStream(err));
+    }
     @Test
     @DisplayName("Carpet Addition Test")
-    void TestCustomerCreation() {
+    void TestCarpetCreation() {
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         Carpet carpet = new Carpet(0, "Test carpet", 10.1, 20.1, "Fabric", 20.0);
         CarpetTableActions carpetTableActions = new CarpetTableActions(carpet, con);
@@ -30,7 +33,7 @@ public class CarpetTableActionsTest {
 
     @Test
     @DisplayName("Carpet Deletion Test")
-    void TestCustomerDeletion() {
+    void TestCarpetDeletion() {
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         Carpet carpet = new Carpet(0, "Test carpet", 10.1, 20.1, "Fabric", 20.0);
         CarpetTableActions carpetTableActions = new CarpetTableActions(carpet, con);
@@ -41,8 +44,8 @@ public class CarpetTableActionsTest {
     }
 
     @Test
-    @DisplayName("Carpet update Test")
-    void TestCustomerUpdate()
+    @DisplayName("Carpet Update Test")
+    void TestCarpetrUpdate()
     {
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         Carpet carpet = new Carpet(0, "Test carpet", 10.1, 20.1, "Fabric", 20.0);
@@ -56,5 +59,17 @@ public class CarpetTableActionsTest {
         CarpetTableActions carpetTableAction = new CarpetTableActions(carpet, con);
         carpetTableAction.update(carpetId);
         Assertions.assertEquals("Carpet ID: "+ carpetId+", Name: Test carpet2, Height: 10.1, Width: 20.1, Material: Fabricz,Price: $20.0",updatedcarpet.toString());
+    }
+
+    @Test
+    @DisplayName("Carpet Search Test")
+    void TestCarpetSearch()
+    {
+        setStreams();
+        Connection con = DatabaseConnection.getInstance(false).getConnection();
+        CarpetTableActions carpetTableActions = new CarpetTableActions(null, con);
+        carpetTableActions.searchCarpet("a");
+        String expectedOutput = "Sorry, could not find any carpets thet starts with a";
+        Assertions.assertEquals((expectedOutput) , out.toString().replaceAll("\n", "").replaceAll("\r", ""));
     }
 }

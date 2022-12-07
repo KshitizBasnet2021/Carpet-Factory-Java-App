@@ -136,4 +136,36 @@ public class CarpetTableActions extends DatabaseManipulation{
         }
         return null;
     }
+    public void searchCarpet(String searchString) {
+        try {
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM Carpet where name like '"+searchString+"%'");
+            ResultSet rs = statement.executeQuery();
+            ArrayList<Carpet> carpetArrayList = new ArrayList<>();
+            while (rs.next()) {
+                // read the result set
+                int carpetId = rs.getInt("carpet_Id");
+                String name = rs.getString("name");
+                Double height = rs.getDouble("height");
+                Double width = rs.getDouble("width");
+                String material = rs.getString("material");
+                double price = rs.getDouble("price");
+                Carpet carpet = new Carpet(carpetId,name, height, width, material, price);
+                carpetArrayList.add(carpet);
+            }
+            if(carpetArrayList.size()>0) {
+                CommonList carpetList = new CommonList(carpetArrayList);
+                Iterator<Carpet> carpetListIterator = carpetList.createIterator();
+
+                IteratorOutputs iteratorOutputs = new IteratorOutputs(carpetListIterator);
+                iteratorOutputs.displayData();
+            }else {
+                System.out.println("Sorry, could not find any carpets thet starts with "+searchString);
+            }
+
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
 }

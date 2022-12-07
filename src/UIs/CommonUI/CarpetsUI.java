@@ -2,8 +2,8 @@ package UIs.CommonUI;
 
 import DatabaseActions.CarpetTableActions;
 import DatabaseActions.OrderTableActions;
+import FacadePattern.CarpetActionsFacade;
 import FacadePattern.CarpetOrder;
-import FacadePattern.CarpetOrderFacade;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -39,8 +39,8 @@ public class CarpetsUI {
                 carpetId = Integer.parseInt(scn.nextLine());
             }
             //facade pattern in use
-            CarpetOrderFacade customerOrderFacade =
-                    new CarpetOrderFacade(new CarpetOrder(customerId, orderId, carpetId, con));
+            CarpetActionsFacade customerOrderFacade =
+                    new CarpetActionsFacade(new CarpetOrder(customerId, orderId, carpetId, con), null);
             customerOrderFacade.orderCarpet();
             System.out.println("Added to cart");
             System.out.println(customerOrderFacade);
