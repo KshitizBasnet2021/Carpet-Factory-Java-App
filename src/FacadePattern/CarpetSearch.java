@@ -16,4 +16,5 @@ public class CarpetSearch {
     public void display(){
         carpetTableActions.searchCarpet(searchString);
     }
+
 }

@@ -159,7 +159,7 @@ public class CarpetTableActions extends DatabaseManipulation{
                 IteratorOutputs iteratorOutputs = new IteratorOutputs(carpetListIterator);
                 iteratorOutputs.displayData();
             }else {
-                System.out.println("Sorry, could not find any carpets thet starts with "+searchString);
+                System.out.println("Sorry, could not find any carpets that starts with "+searchString);
             }
 
 

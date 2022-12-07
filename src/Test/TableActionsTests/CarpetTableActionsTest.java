@@ -45,7 +45,7 @@ public class CarpetTableActionsTest {
 
     @Test
     @DisplayName("Carpet Update Test")
-    void TestCarpetrUpdate()
+    void TestCarpetUpdate()
     {
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         Carpet carpet = new Carpet(0, "Test carpet", 10.1, 20.1, "Fabric", 20.0);
@@ -69,7 +69,7 @@ public class CarpetTableActionsTest {
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         CarpetTableActions carpetTableActions = new CarpetTableActions(null, con);
         carpetTableActions.searchCarpet("Randommm");
-        String expectedOutput = "Sorry, could not find any carpets thet starts with Randommm";
+        String expectedOutput = "Sorry, could not find any carpets that starts with Randommm";
         Assertions.assertEquals((expectedOutput) , out.toString().replaceAll("\n", "").replaceAll("\r", ""));
     }
 }

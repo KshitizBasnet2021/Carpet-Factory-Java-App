@@ -2,6 +2,8 @@ package UIs.CommonUI;
 
 import DatabaseActions.CarpetTableActions;
 import DatabaseActions.OrderTableActions;
+import Entities.Carpet;
+import FacadePattern.CarpetActions;
 import FacadePattern.CarpetActionsFacade;
 import FacadePattern.CarpetOrder;
 import FacadePattern.CarpetSearch;
@@ -24,19 +26,14 @@ public class CarpetsUI {
         carpetTableActions.printAll();
     }
 
-    public void searchCarpets(String searchString) {
-        CarpetActionsFacade customerOrderFacade =
-                new CarpetActionsFacade(null, new CarpetSearch(searchString, null));
-        customerOrderFacade.orderCarpet();
-    }
-
-    public void searchCarpetByName(){
+    public void searchCarpetByName() {
         System.out.println("Please enter the carpet name. You can type what the name starts with");
         String carpetName = scn.nextLine();
         CarpetActionsFacade customerOrderFacade =
-                new CarpetActionsFacade(null, new CarpetSearch(carpetName,con));
+                new CarpetActionsFacade(null, null, new CarpetSearch(carpetName, con));
         customerOrderFacade.searchCarpet();
     }
+
     public void carpetOrder(int customerId) {
         //display carpets
         displayAllCarpets();
@@ -59,7 +56,7 @@ public class CarpetsUI {
                     }
                     //facade pattern in use
                     CarpetActionsFacade customerOrderFacade =
-                            new CarpetActionsFacade(new CarpetOrder(customerId, orderId, carpetId, con), null);
+                            new CarpetActionsFacade(null, new CarpetOrder(customerId, orderId, carpetId, con), null);
                     customerOrderFacade.orderCarpet();
                     System.out.println("Added to cart");
                     System.out.println(customerOrderFacade);
@@ -73,6 +70,39 @@ public class CarpetsUI {
                     carpetId = 0;
                 }
             }
+        }
+    }
+
+    public void crudCarpetUI(String type) {
+        int carpetId;
+        if (type.equals("U")) {
+            System.out.println("Enter carpet Id of the carpet to update");
+            carpetId = Integer.parseInt(scn.nextLine());
+        } else if (type.equals("D")) {
+            System.out.println("Enter carpet Id to delete");
+            carpetId = Integer.parseInt(scn.nextLine());
+        } else {
+            carpetId = 0;
+        }
+        System.out.println("Enter the name of the carpet");
+        String name = scn.nextLine();
+        System.out.println("Enter the height of the carpet");
+        double height = Double.parseDouble(scn.nextLine());
+        System.out.println("Enter the width of the carpet");
+        double width = Double.parseDouble(scn.nextLine());
+        System.out.println("Enter the material of the carpet");
+        String material = scn.nextLine();
+        System.out.println("Enter the price of the carpet");
+        double price = Double.parseDouble(scn.nextLine());
+
+        CarpetActions carpetActions = new CarpetActions(new Carpet(carpetId, name, height, width, material, price), con);
+        CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null);
+        if (carpetId != 0) {
+            carpetActionsFacade.update(carpetId);
+        } else if (carpetId == -1) {
+            carpetActionsFacade.delete(carpetId);
+        } else {
+            carpetActionsFacade.addCarpet();
         }
     }
 }
