@@ -1,6 +1,7 @@
 import Features.Login.Login;
 import Singleton.DatabaseConnection;
 import UIs.AdminUi.AdminUI;
+import UIs.CustomerRegistration.CustomerRegistrationUI;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -16,30 +17,35 @@ public class AuthenticationUI {
         this.scn = new Scanner(System.in);
         while (true) {
             System.out.println("Welcome to ABC Carpets Inc");
-            System.out.println("Enter E to login as employee or any keyword to login as customer");
+            System.out.println("Enter R to register, Enter E to login as employee or any keyword to login as customer");
             String userInput = scn.nextLine();
             if (userInput.equals("E")) {
                 this.type = "Admin";
-            } else {
+            } else if (userInput.equals("R")) {
+                CustomerRegistrationUI addCustomerUI = new CustomerRegistrationUI(con, scn, "");
+                addCustomerUI.enterCustomerManually(con, scn);
+                break;
+            }
+            else {
                 this.type = "Customer";
             }
             this.loggedInUser = login();
             checkLogin();
         }
     }
-    public void checkLogin(){
-        if(this.loggedInUser == 0){
+
+    public void checkLogin() {
+        if (this.loggedInUser == 0) {
             System.out.println("Your credentials are incorrect please try again");
-        }
-        else {
-            if(type == "Admin"){
+        } else {
+            if (type == "Admin") {
                 displayAdminUi();
-            }
-            else {
+            } else {
                 //todo customer;
             }
         }
     }
+
     public int login() {
         System.out.println("Welcome " + type);
         System.out.println("Enter login Details");
@@ -57,6 +63,5 @@ public class AuthenticationUI {
 
     public void displayAdminUi() {
         new AdminUI(con, scn).start();
-
     }
 }

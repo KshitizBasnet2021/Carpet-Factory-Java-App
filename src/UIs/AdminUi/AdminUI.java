@@ -1,6 +1,6 @@
 package UIs.AdminUi;
 
-import Singleton.DatabaseConnection;
+import UIs.CustomerRegistration.CustomerRegistrationUI;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -20,7 +20,7 @@ public class AdminUI {
                 CustomerFinderUI customerFinderUI = new CustomerFinderUI();
                 customerFinderUI.getCustomerfromtheSystem(con, scn);
             } else {
-                AddCustomerUI addCustomerUI = new AddCustomerUI(con, scn);
+                CustomerRegistrationUI addCustomerUI = new CustomerRegistrationUI(con, scn,"A");
                 addCustomerUI.enterCustomerManually(con, scn);
             }
         }
