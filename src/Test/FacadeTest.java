@@ -49,9 +49,9 @@ public class FacadeTest {
         setStreams();
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         CarpetActionsFacade customerSearchFacade =
-                new CarpetActionsFacade(null, new CarpetSearch("a", con));
+                new CarpetActionsFacade(null, new CarpetSearch("Randommm", con));
         customerSearchFacade.searchCarpet();
-        String expectedOutput = "Sorry, could not find any carpets thet starts with a";
+        String expectedOutput = "Sorry, could not find any carpets thet starts with Randommm";
         Assertions.assertEquals((expectedOutput) , out.toString().replaceAll("\n", "").replaceAll("\r", ""));
     }
 }

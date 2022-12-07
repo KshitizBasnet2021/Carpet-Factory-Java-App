@@ -68,8 +68,8 @@ public class CarpetTableActionsTest {
         setStreams();
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         CarpetTableActions carpetTableActions = new CarpetTableActions(null, con);
-        carpetTableActions.searchCarpet("a");
-        String expectedOutput = "Sorry, could not find any carpets thet starts with a";
+        carpetTableActions.searchCarpet("Randommm");
+        String expectedOutput = "Sorry, could not find any carpets thet starts with Randommm";
         Assertions.assertEquals((expectedOutput) , out.toString().replaceAll("\n", "").replaceAll("\r", ""));
     }
 }
