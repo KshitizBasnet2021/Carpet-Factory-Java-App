@@ -23,15 +23,6 @@ public class CarpetActionsFacade {
         carpetOrder.getAllItemsInOrder();
     }
 
-    public void changeDeliveryType(boolean type) {
-        carpetOrder.setDelivery(type);
-        orderCarpet();
-    }
-
-    public void changeStatusType(CarpetOrder.OrderStatus type) {
-        carpetOrder.setOrderStatus(type);
-        orderCarpet();
-    }
 
     public void displayCarpetsinOrder() {
         carpetOrder.displayAllItemsInOrder();
