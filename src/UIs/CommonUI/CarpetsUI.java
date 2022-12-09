@@ -30,7 +30,7 @@ public class CarpetsUI {
         System.out.println("Please enter the carpet name. You can type what the name starts with");
         String carpetName = scn.nextLine();
         CarpetActionsFacade customerOrderFacade =
-                new CarpetActionsFacade(null, null, new CarpetSearch(carpetName, con));
+                new CarpetActionsFacade(null, null, new CarpetSearch(carpetName, con), null);
         customerOrderFacade.searchCarpet();
     }
 
@@ -56,7 +56,7 @@ public class CarpetsUI {
                     }
                     //facade pattern in use
                     CarpetActionsFacade customerOrderFacade =
-                            new CarpetActionsFacade(null, new CarpetOrder(customerId, orderId, carpetId, con), null);
+                            new CarpetActionsFacade(null, new CarpetOrder(customerId, orderId, carpetId, con), null, null);
                     customerOrderFacade.orderCarpet();
                     System.out.println("Added to cart");
                     System.out.println(customerOrderFacade);
@@ -79,7 +79,7 @@ public class CarpetsUI {
             System.out.println("Enter carpet Id to delete");
             carpetId = Integer.parseInt(scn.nextLine());
             CarpetActions carpetActions = new CarpetActions(null, con);
-            CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null);
+            CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null, null);
             carpetActionsFacade.delete(carpetId);
         }
 
@@ -102,7 +102,7 @@ public class CarpetsUI {
             double price = Double.parseDouble(scn.nextLine());
 
             CarpetActions carpetActions = new CarpetActions(new Carpet(carpetId, name, height, width, material, price), con);
-            CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null);
+            CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null, null);
             if (carpetId != 0) {
                 carpetActionsFacade.update(carpetId);
             }  else {

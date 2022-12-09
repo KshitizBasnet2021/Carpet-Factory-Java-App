@@ -1,4 +1,4 @@
-package Test;
+package Test.SingletonTest;
 
 import Singleton.*;
 import org.junit.FixMethodOrder;
