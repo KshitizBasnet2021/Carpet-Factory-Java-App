@@ -1,6 +1,7 @@
 package UIs.AdminUi;
 
 import UIs.CommonUI.CarpetsUI;
+import UIs.CommonUI.CustomizedCarpetUI;
 import UIs.CustomerRegistration.CustomerRegistrationUI;
 
 import java.sql.Connection;
@@ -15,9 +16,9 @@ public class AdminUI {
     }
     public void start(){
         while(true) {
-            System.out.println("Enter C for carpet options or press any keyword for order");
+            System.out.println("Enter O for carpet options or press any keyword for order");
             String userOption = scn.nextLine();
-            if(userOption.equals("C")){
+            if(userOption.equals("O")){
                 CarpetsUI carpetsUI = new CarpetsUI(con,scn);
                 System.out.println("Enter any key word to add, U to update a carpet and D to delete a carpet");
                 String userCRUDOption = scn.nextLine();

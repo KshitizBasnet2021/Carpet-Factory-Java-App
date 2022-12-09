@@ -2,6 +2,7 @@ import Features.Login.Login;
 import Singleton.DatabaseConnection;
 import UIs.AdminUi.AdminUI;
 import UIs.CustomerRegistration.CustomerRegistrationUI;
+import UIs.CustomerUI.CustomerUI;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -41,7 +42,7 @@ public class AuthenticationUI {
             if (type == "Admin") {
                 displayAdminUi();
             } else {
-                //todo customer;
+                displayCustomerUI();
             }
         }
     }
@@ -63,5 +64,8 @@ public class AuthenticationUI {
 
     public void displayAdminUi() {
         new AdminUI(con, scn).start();
+    }
+    public void displayCustomerUI() {
+        new CustomerUI(con, scn, loggedInUser).start();
     }
 }

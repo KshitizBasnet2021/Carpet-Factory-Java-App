@@ -43,32 +43,7 @@ public class CarpetsUI {
             if (userMood.equals("Y")) {
                 searchCarpetByName();
             } else {
-                //Select the carpet
-                System.out.println("\nEnter the carpet id that the customer wants to buy");
-                int carpetId = Integer.parseInt(scn.nextLine());
-
-                OrderTableActions orderTableActions = new OrderTableActions(con);
-                int orderId = orderTableActions.add();
-                while (true) {
-                    if (carpetId == 0) {
-                        System.out.println("\nSelect the carpet id that the customer wants to buy");
-                        carpetId = Integer.parseInt(scn.nextLine());
-                    }
-                    //facade pattern in use
-                    CarpetActionsFacade customerOrderFacade =
-                            new CarpetActionsFacade(null, new CarpetOrder(customerId, orderId, carpetId, con), null, null);
-                    customerOrderFacade.orderCarpet();
-                    System.out.println("Added to cart");
-                    System.out.println(customerOrderFacade);
-                    System.out.println("Do you want to add more carpets? Press Y to add more carpets or press any key word to no");
-                    String userChoice = scn.nextLine();
-                    if (!userChoice.equals("Y")) {
-                        System.out.println("The items that the customer bought are:");
-                        customerOrderFacade.displayCarpetsinOrder();
-                        break;
-                    }
-                    carpetId = 0;
-                }
+                customerCarpetOrder(customerId);
             }
         }
     }
@@ -81,9 +56,7 @@ public class CarpetsUI {
             CarpetActions carpetActions = new CarpetActions(null, con);
             CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null, null);
             carpetActionsFacade.delete(carpetId);
-        }
-
-        else {
+        } else {
             if (type.equals("U")) {
                 System.out.println("Enter carpet Id of the carpet to update");
                 carpetId = Integer.parseInt(scn.nextLine());
@@ -105,9 +78,38 @@ public class CarpetsUI {
             CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null, null);
             if (carpetId != 0) {
                 carpetActionsFacade.update(carpetId);
-            }  else {
+            } else {
                 carpetActionsFacade.addCarpet();
             }
+        }
+    }
+
+    public void customerCarpetOrder(int customerId) {
+        //Select the carpet
+        System.out.println("\nEnter the carpet id that the you want to order");
+        int carpetId = Integer.parseInt(scn.nextLine());
+
+        OrderTableActions orderTableActions = new OrderTableActions(con);
+        int orderId = orderTableActions.add();
+        while (true) {
+            if (carpetId == 0) {
+                System.out.println("\nSelect the carpet id that the you want to order");
+                carpetId = Integer.parseInt(scn.nextLine());
+            }
+            //facade pattern in use
+            CarpetActionsFacade customerOrderFacade =
+                    new CarpetActionsFacade(null, new CarpetOrder(customerId, orderId, carpetId, con), null, null);
+            customerOrderFacade.orderCarpet();
+            System.out.println("Added to cart");
+            System.out.println(customerOrderFacade);
+            System.out.println("Do you want to add more carpets? Press Y to add more carpets or press any key word to no");
+            String userChoice = scn.nextLine();
+            if (!userChoice.equals("Y")) {
+                System.out.println("The items that in this order are:");
+                customerOrderFacade.displayCarpetsinOrder();
+                break;
+            }
+            carpetId = 0;
         }
     }
 }
