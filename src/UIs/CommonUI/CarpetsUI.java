@@ -75,34 +75,39 @@ public class CarpetsUI {
 
     public void crudCarpetUI(String type) {
         int carpetId;
-        if (type.equals("U")) {
-            System.out.println("Enter carpet Id of the carpet to update");
-            carpetId = Integer.parseInt(scn.nextLine());
-        } else if (type.equals("D")) {
+        if (type.equals("D")) {
             System.out.println("Enter carpet Id to delete");
             carpetId = Integer.parseInt(scn.nextLine());
-        } else {
-            carpetId = 0;
-        }
-        System.out.println("Enter the name of the carpet");
-        String name = scn.nextLine();
-        System.out.println("Enter the height of the carpet");
-        double height = Double.parseDouble(scn.nextLine());
-        System.out.println("Enter the width of the carpet");
-        double width = Double.parseDouble(scn.nextLine());
-        System.out.println("Enter the material of the carpet");
-        String material = scn.nextLine();
-        System.out.println("Enter the price of the carpet");
-        double price = Double.parseDouble(scn.nextLine());
-
-        CarpetActions carpetActions = new CarpetActions(new Carpet(carpetId, name, height, width, material, price), con);
-        CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null);
-        if (carpetId != 0) {
-            carpetActionsFacade.update(carpetId);
-        } else if (carpetId == -1) {
+            CarpetActions carpetActions = new CarpetActions(null, con);
+            CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null);
             carpetActionsFacade.delete(carpetId);
-        } else {
-            carpetActionsFacade.addCarpet();
+        }
+
+        else {
+            if (type.equals("U")) {
+                System.out.println("Enter carpet Id of the carpet to update");
+                carpetId = Integer.parseInt(scn.nextLine());
+            } else {
+                carpetId = 0;
+            }
+            System.out.println("Enter the name of the carpet");
+            String name = scn.nextLine();
+            System.out.println("Enter the height of the carpet");
+            double height = Double.parseDouble(scn.nextLine());
+            System.out.println("Enter the width of the carpet");
+            double width = Double.parseDouble(scn.nextLine());
+            System.out.println("Enter the material of the carpet");
+            String material = scn.nextLine();
+            System.out.println("Enter the price of the carpet");
+            double price = Double.parseDouble(scn.nextLine());
+
+            CarpetActions carpetActions = new CarpetActions(new Carpet(carpetId, name, height, width, material, price), con);
+            CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(carpetActions, null, null);
+            if (carpetId != 0) {
+                carpetActionsFacade.update(carpetId);
+            }  else {
+                carpetActionsFacade.addCarpet();
+            }
         }
     }
 }
