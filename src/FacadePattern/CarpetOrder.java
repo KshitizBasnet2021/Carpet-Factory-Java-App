@@ -11,8 +11,6 @@ import java.util.ArrayList;
 public class CarpetOrder{
 
 	CartTableActions cartTableAction;
-	OrderStatus orderStatus;
-	boolean homeDelivery;
 	int carpetId;
 	public CarpetOrder(int customerId, int orderId, int carpetId, Connection con){
 		this.carpetId = carpetId;
@@ -21,25 +19,6 @@ public class CarpetOrder{
 	public enum OrderStatus {
 		Pending,
 		Completed,
-	}
-
-	private String getStatus(){
-		if(orderStatus.equals(OrderStatus.Completed)){
-			return "Completed Order";
-		}
-		return "Pending Order";
-	}
-	private String getHomeDelivery(){
-		if(homeDelivery){
-			return "Customer Asked for Home Delivery";
-		}
-		return "In Store Pickup";
-	}
-	public void setDelivery(boolean type){
-		this.homeDelivery = type;
-	}
-	public void setOrderStatus(OrderStatus type){
-		this.orderStatus = type;
 	}
 
 	public void startOrder(){
