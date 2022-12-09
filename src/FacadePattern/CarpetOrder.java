@@ -16,10 +16,6 @@ public class CarpetOrder{
 		this.carpetId = carpetId;
 		this.cartTableAction = new CartTableActions(con, customerId, orderId, carpetId);
 	}
-	public enum OrderStatus {
-		Pending,
-		Completed,
-	}
 
 	public void startOrder(){
 		this.cartTableAction.add();

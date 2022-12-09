@@ -1,58 +1,66 @@
 package FacadePattern;
 
+import CarpetCRUDActions.CarpetActions;
 import Entities.CustomizedCarpetOrder;
 
-//sometimes searched carpet can be ordered automatically
+//sometimes searched carpet can be ordered or customized automatically for the future
 public class CarpetActionsFacade {
     CarpetOrder carpetOrder;
     CarpetSearch carpetSearch;
-    CarpetActions carpetActions;
 
     CustomizedCarpetOrderActions customizedCarpetOrderActions;
 
-    public CarpetActionsFacade(CarpetActions carpetActions, CarpetOrder carpetOrder, CarpetSearch carpetSearch, CustomizedCarpetOrderActions customizedCarpetOrderActions) {
+    public CarpetActionsFacade(CarpetOrder carpetOrder, CarpetSearch carpetSearch, CustomizedCarpetOrderActions customizedCarpetOrderActions) {
         this.carpetOrder = carpetOrder;
         this.carpetSearch = carpetSearch;
-        this.carpetActions = carpetActions;
         this.customizedCarpetOrderActions = customizedCarpetOrderActions;
 
     }
 
     public void orderCarpet() {
-        carpetOrder.startOrder();
-        carpetOrder.getAllItemsInOrder();
+        if (!carpetOrder.equals(null)) {
+            carpetOrder.startOrder();
+            carpetOrder.getAllItemsInOrder();
+        }
+        System.out.println("Cannot invoke order carpet as it is null");
     }
 
 
     public void displayCarpetsinOrder() {
-        carpetOrder.displayAllItemsInOrder();
+        if (!carpetOrder.equals(null)) {
+            carpetOrder.displayAllItemsInOrder();
+        } else {
+            System.out.println("Cannot invoke display carpet as it is null");
+        }
     }
 
     //search
     public void searchCarpet() {
-        carpetSearch.display();
-    }
-
-    //carpets crud
-    public int addCarpet() {
-        return carpetActions.add();
-    }
-
-    public void update(int carpetId) {
-        carpetActions.update(carpetId);
-    }
-
-    public void delete(int carpetId) {
-        carpetActions.delete(carpetId);
+        if (!carpetSearch.equals(null)) {
+            carpetSearch.display();
+        } else {
+            System.out.println("Cannot invoke search carpet as it is null");
+        }
     }
 
     //customized carpet
     public int addCustomizedOrder() {
-        return customizedCarpetOrderActions.add();
+        if (!customizedCarpetOrderActions.equals(null))
+            return customizedCarpetOrderActions.add();
+        else {
+            System.out.println("Cannot invoke adding customized  carpet order as it is null");
+            return 0;
+        }
     }
-	public CustomizedCarpetOrder getCustomizedOrder(int id) {
-		return customizedCarpetOrderActions.get(id);
-	}
+
+    public CustomizedCarpetOrder getCustomizedOrder(int id) {
+        if (!customizedCarpetOrderActions.equals(null)) {
+            return customizedCarpetOrderActions.get(id);
+        } else {
+            System.out.println("Cannot invoke order carpet as it is null");
+            return null;
+        }
+    }
 
 
     public String toString() {

@@ -1,4 +1,5 @@
 package Test.FacadeTest;
+import CarpetCRUDActions.CarpetActions;
 import DatabaseActions.*;
 import DecoratorPattern.CustomizedCarpet;
 import DecoratorPattern.GoldMaterial;
@@ -42,7 +43,7 @@ public class FacadeTest {
         OrderTableActions orderTableActions = new OrderTableActions(con);
         int orderId = orderTableActions.add();
         CarpetActionsFacade customerOrderFacade =
-                new CarpetActionsFacade(null, new CarpetOrder(customerId, orderId, carpetId, con), null, null);
+                new CarpetActionsFacade(new CarpetOrder(customerId, orderId, carpetId, con), null, null);
         customerOrderFacade.orderCarpet();
         Assertions.assertEquals("Carpet ID: " + carpetId + ", Name: Test Carpet, Height: 10.1, Width: 8.0, Material: Fabric,Price: $10.0", customerOrderFacade.toString(), "Should be equal");
     }
@@ -53,56 +54,12 @@ public class FacadeTest {
         setStreams();
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         CarpetActionsFacade customerSearchFacade =
-                new CarpetActionsFacade(null, null, new CarpetSearch("Randommm", con), null);
+                new CarpetActionsFacade(null,  new CarpetSearch("Randommm", con), null);
         customerSearchFacade.searchCarpet();
         String expectedOutput = "Sorry, could not find any carpets that starts with Randommm";
         Assertions.assertEquals((expectedOutput), out.toString().replaceAll("\n", "").replaceAll("\r", ""));
     }
 
-    @DisplayName("Facade Carpet Addition Testing")
-    @Test
-    void FacadeCarpetAddTest() {
-        Connection con = DatabaseConnection.getInstance(false).getConnection();
-        CarpetActionsFacade carpetActionsFacade =
-                new CarpetActionsFacade(new CarpetActions(new Carpet(0, "Persian Carpet", 2.0, 2.0, "Fabric", 2.0), con), null, null, null);
-        int carpetId = carpetActionsFacade.addCarpet();
-        CarpetTableActions cta = new CarpetTableActions(null, con);
-        Carpet getCarpet = cta.getCarpet(carpetId);
-        Assertions.assertEquals("Carpet ID: " + carpetId + ", Name: Persian Carpet, Height: 2.0, Width: 2.0, Material: Fabric,Price: $2.0",
-                getCarpet.toString());
-    }
-
-    @DisplayName("Facade Carpet Delete Testing")
-    @Test
-    void FacadeCarpetDeleteTest() {
-        Connection con = DatabaseConnection.getInstance(false).getConnection();
-        //first add
-        CarpetActionsFacade carpetActionsFacade =
-                new CarpetActionsFacade(new CarpetActions(new Carpet(0, "Persian Carpet 2", 2.0, 2.0, "Fabric", 2.0), con), null, null, null);
-        int createdCarpet1 = carpetActionsFacade.addCarpet();
-        //then delete
-        carpetActionsFacade.delete(createdCarpet1);
-        CarpetTableActions cta = new CarpetTableActions(null, con);
-        Carpet carpet1 = cta.getCarpet(createdCarpet1);
-        Assertions.assertEquals("Carpet ID: 0, Name: null, Height: 0.0, Width: 0.0, Material: null,Price: $0.0", carpet1.toString());
-    }
-
-    @Test
-    @DisplayName("Facade Carpet Update Test")
-    void TestCarpetUpdate() {
-        Connection con = DatabaseConnection.getInstance(false).getConnection();
-        //first add
-        CarpetActionsFacade carpetActionsFacade =
-                new CarpetActionsFacade(new CarpetActions(new Carpet(0, "Persian Carpet 2", 2.0, 2.0, "Fabric", 2.0), con), null, null, null);
-        int createdCarpet1 = carpetActionsFacade.addCarpet();
-        //then update
-        CarpetActionsFacade carpetActionsFacade1 =
-                new CarpetActionsFacade(new CarpetActions(new Carpet(createdCarpet1, "Persian Carpet 3", 2.0, 2.0, "Fabric", 2.0), con), null, null,null);
-        carpetActionsFacade1.update(createdCarpet1);
-        CarpetTableActions cta = new CarpetTableActions(null, con);
-        Carpet editedCarpet = cta.getCarpet(createdCarpet1);
-        Assertions.assertEquals("Carpet ID: "+ createdCarpet1+", Name: Persian Carpet 3, Height: 2.0, Width: 2.0, Material: Fabric,Price: $2.0", editedCarpet.toString());
-    }
     //Customized Carpet
     @Test
     @DisplayName("Customized Carpet")
@@ -122,7 +79,7 @@ public class FacadeTest {
 
         CustomizedOrderTableActions customizedOrderTableActions = new CustomizedOrderTableActions(con, customizedCarpetOrder);
         CustomizedCarpetOrderActions customizedCarpetOrderActions = new CustomizedCarpetOrderActions(customizedOrderTableActions);
-        CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(null, null, null,customizedCarpetOrderActions);
+        CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(null, null, customizedCarpetOrderActions);
         int orderId = carpetActionsFacade.addCustomizedOrder();
         Assertions.assertEquals(customizedOrderTableActions.getLastCreatedOrderId(),
                 orderId, "They should Match");
@@ -146,7 +103,7 @@ public class FacadeTest {
 
         CustomizedOrderTableActions customizedOrderTableActions = new CustomizedOrderTableActions(con, customizedCarpetOrder);
         CustomizedCarpetOrderActions customizedCarpetOrderActions = new CustomizedCarpetOrderActions(customizedOrderTableActions);
-        CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(null, null, null,customizedCarpetOrderActions);
+        CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(null, null, customizedCarpetOrderActions);
         int orderId = carpetActionsFacade.addCustomizedOrder();
         CustomizedCarpetOrder customizedCarpetOrder1 = carpetActionsFacade.getCustomizedOrder(orderId);
         Assertions.assertEquals("Customized Order ID:"+orderId+",Order Date: "+customizedCarpetOrder1.getOrderDate()+",Carpet ID: 1,Customer ID: 1, Description: Test carpet Plastic Bottom Layered Carpet, Woolen, Gold, Price: 140.5",

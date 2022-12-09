@@ -1,4 +1,4 @@
-package FacadePattern;
+package CarpetCRUDActions;
 
 import DatabaseActions.CarpetTableActions;
 import Entities.Carpet;
