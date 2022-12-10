@@ -12,8 +12,8 @@ Features Implemented:
 
 Steps to start app:
 - enter login details:
-  admin admin (for admin)
-  hello world (for customer)
-- Register new customer
-- then view the features
+  username: admin - password: admin (for admin)
+  username: hello - password: world (for customer)
+or Register new customer
+Then view the features
 
