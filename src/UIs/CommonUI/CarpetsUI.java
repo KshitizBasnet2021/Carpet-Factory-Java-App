@@ -6,7 +6,7 @@ import Entities.Carpet;
 import CarpetCRUDActions.CarpetActions;
 import FacadePattern.CarpetActionsFacade;
 import FacadePattern.CarpetOrder;
-import FacadePattern.CarpetSearch;
+import CarpetSearch.CarpetSearch;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -29,9 +29,8 @@ public class CarpetsUI {
     public void searchCarpetByName() {
         System.out.println("Please enter the carpet name. You can type what the name starts with");
         String carpetName = scn.nextLine();
-        CarpetActionsFacade customerOrderFacade =
-                new CarpetActionsFacade(null, new CarpetSearch(carpetName, con), null);
-        customerOrderFacade.searchCarpet();
+        CarpetSearch carpetSearch = new CarpetSearch(carpetName, con);
+        carpetSearch.display();
     }
 
     public void carpetOrder(int customerId) {
@@ -96,7 +95,7 @@ public class CarpetsUI {
             }
             //facade pattern in use
             CarpetActionsFacade customerOrderFacade =
-                    new CarpetActionsFacade( new CarpetOrder(customerId, orderId, carpetId, con), null, null);
+                    new CarpetActionsFacade( new CarpetOrder(customerId, orderId, carpetId, con));
             customerOrderFacade.orderCarpet();
             System.out.println("Added to cart");
             System.out.println(customerOrderFacade);

@@ -5,8 +5,7 @@ import DatabaseActions.CustomizedOrderTableActions;
 import DecoratorPattern.*;
 import Entities.Carpet;
 import Entities.CustomizedCarpetOrder;
-import FacadePattern.CarpetActionsFacade;
-import FacadePattern.CustomizedCarpetOrderActions;
+import CustomizedCarpetOrders.CustomizedCarpetOrderActions;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -38,12 +37,11 @@ public class CustomizedCarpetUI {
 
             CustomizedOrderTableActions customizedOrderTableActions = new CustomizedOrderTableActions(con, customizedCarpetOrder);
             CustomizedCarpetOrderActions customizedCarpetOrderActions = new CustomizedCarpetOrderActions(customizedOrderTableActions);
-            CarpetActionsFacade carpetActionsFacade = new CarpetActionsFacade(null, null, customizedCarpetOrderActions);
-            int orderId = carpetActionsFacade.addCustomizedOrder();
+            int orderId = customizedCarpetOrderActions.add();
             if (orderId > 0) {
                 System.out.println("Carpet Order Customization done!");
                 System.out.println("Your customized carpet order details");
-                CustomizedCarpetOrder customizedCarpetOrder1 = carpetActionsFacade.getCustomizedOrder(orderId);
+                CustomizedCarpetOrder customizedCarpetOrder1 = customizedCarpetOrderActions.get(orderId);
                 System.out.println(customizedCarpetOrder1.toString());
             }
         } catch (Exception e) {

@@ -1,4 +1,4 @@
-package FacadePattern;
+package CarpetSearch;
 
 import DatabaseActions.CarpetTableActions;
 

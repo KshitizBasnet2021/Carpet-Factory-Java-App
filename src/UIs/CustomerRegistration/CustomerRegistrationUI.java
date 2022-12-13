@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class CustomerRegistrationUI {
         Scanner scn;
         Connection con;
-
         String type;
         public CustomerRegistrationUI(Connection con, Scanner scn, String type) {
             this.con = con;
