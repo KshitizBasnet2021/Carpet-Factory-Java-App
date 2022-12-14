@@ -25,10 +25,7 @@ public class CustomizedCarpetUI {
     public void displayCustomizedCarpetUI() {
         try {
             System.out.println("All Carpets Available in the store");
-
-            System.out.println("Enter the carpet that you want to customize");
-            int carpetId = Integer.parseInt(scn.nextLine());
-
+            int carpetId = new CarpetExistanceChecker(con, scn).getValidCarpetId();
             CarpetTableActions carpetTableActionsTest = new CarpetTableActions(null, con);
             Carpet carpetToBeCustomized = carpetTableActionsTest.getCarpet(carpetId);
 

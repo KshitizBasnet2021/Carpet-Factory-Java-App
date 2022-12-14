@@ -85,18 +85,14 @@ public class CarpetsUI {
 
     public void customerCarpetOrder(int customerId) {
         //Select the carpet
-        System.out.println("\nEnter the carpet id that the you want to order");
-        int carpetId = Integer.parseInt(scn.nextLine());
-
+        int carpetId = new CarpetExistanceChecker(con, scn).getValidCarpetId();
         OrderTableActions orderTableActions = new OrderTableActions(con);
         int orderId = orderTableActions.add();
         while (true) {
             if (carpetId == 0) {
-                System.out.println("\nSelect the carpet id that the you want to order");
-                carpetId = Integer.parseInt(scn.nextLine());
+                carpetId = new CarpetExistanceChecker(con, scn).getValidCarpetId();
             }
-            System.out.println("Type H for home Delivery");
-                //facade pattern in use
+            //facade pattern in use
             CarpetOrderFacade customerOrderFacade =
                     new CarpetOrderFacade( new CarpetOrder(customerId, orderId, carpetId, con), new Delivery(false), new Packaging());
             customerOrderFacade.orderCarpet();
@@ -120,3 +116,4 @@ public class CarpetsUI {
         }
     }
 }
+
