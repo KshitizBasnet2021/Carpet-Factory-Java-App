@@ -34,8 +34,7 @@ public class FacadeTest {
     void FacadeOrderTest() {
         Connection con = DatabaseConnection.getInstance(false).getConnection();
         //add customer
-        int customerId = 15;
-
+        int customerId = 1;
         //add carpet
         Carpet carpet = new Carpet(1, "Test Carpet", 10.1, 8.0, "Fabric", 10);
         CarpetTableActions carpetTableActions = new CarpetTableActions(carpet, con);
@@ -43,8 +42,9 @@ public class FacadeTest {
         //place an order
         OrderTableActions orderTableActions = new OrderTableActions(con);
         int orderId = orderTableActions.add();
-        CarpetActionsFacade customerOrderFacade =
-                new CarpetActionsFacade(new CarpetOrder(customerId, orderId, carpetId, con));
+        Delivery delivery = new Delivery(true);
+        CarpetOrderFacade customerOrderFacade =
+                new CarpetOrderFacade(new CarpetOrder(customerId, orderId, carpetId, con), delivery,new Packaging());
         customerOrderFacade.orderCarpet();
         Assertions.assertEquals("Carpet ID: " + carpetId + ", Name: Test Carpet, Height: 10.1, Width: 8.0, Material: Fabric,Price: $10.0", customerOrderFacade.toString(), "Should be equal");
     }

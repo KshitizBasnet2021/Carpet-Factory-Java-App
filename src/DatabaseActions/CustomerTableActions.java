@@ -233,5 +233,24 @@ public class CustomerTableActions extends  DatabaseManipulation {
         }
         return 0;
     }
+
+    public Address getCustomerAddress(int customerId) {
+        try {
+            PreparedStatement statement = con.prepareStatement("SELECT * FROM customer " +
+                    "join address on address.address_Id = customer.address_id" +
+                    " where customer_id = ? ");
+            statement.setInt(1, customerId);
+            ResultSet rs = statement.executeQuery();
+            String line1 = rs.getString("line1");
+            String city = rs.getString("city");
+            String state = rs.getString("state");
+            String country = rs.getString("country");
+            int zipCode = rs.getInt("zipCode");
+            return new Address(line1, city, state, country, zipCode);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }
 

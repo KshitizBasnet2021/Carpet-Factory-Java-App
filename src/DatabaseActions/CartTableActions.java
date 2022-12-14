@@ -163,5 +163,26 @@ public class CartTableActions extends  DatabaseManipulation {
         }
         return null;
     }
+
+    //helper functions
+    public Customer getCustomerFromCustomerID(int customerId) {
+        try {
+           CustomerTableActions customerTableActions = new CustomerTableActions(null, con);
+           return customerTableActions.getCustomer(customerId);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+
+    public Address getAddressFromCustomerID(int customerId) {
+        try {
+            CustomerTableActions customerTableActions = new CustomerTableActions(null, con);
+            return customerTableActions.getCustomerAddress(customerId);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return null;
+    }
 }
 

@@ -17,7 +17,7 @@ public class CustomerUI {
     }
     public void start(){
         while(true) {
-                System.out.println("Enter C to order a customized carpet or enter any keyword to order a customized carpet");
+                System.out.println("Enter C to order a customized carpet or enter any keyword to order a normal carpet");
                 String userInput = scn.nextLine();
                 CarpetsUI carpetsUI = new CarpetsUI(con, scn);
                 System.out.println("All carpets in the store:");

@@ -4,9 +4,11 @@ import DatabaseActions.CarpetTableActions;
 import DatabaseActions.OrderTableActions;
 import Entities.Carpet;
 import CarpetCRUDActions.CarpetActions;
-import FacadePattern.CarpetActionsFacade;
+import FacadePattern.CarpetOrderFacade;
 import FacadePattern.CarpetOrder;
 import CarpetSearch.CarpetSearch;
+import FacadePattern.Delivery;
+import FacadePattern.Packaging;
 
 import java.sql.Connection;
 import java.util.Scanner;
@@ -93,17 +95,25 @@ public class CarpetsUI {
                 System.out.println("\nSelect the carpet id that the you want to order");
                 carpetId = Integer.parseInt(scn.nextLine());
             }
-            //facade pattern in use
-            CarpetActionsFacade customerOrderFacade =
-                    new CarpetActionsFacade( new CarpetOrder(customerId, orderId, carpetId, con));
+            System.out.println("Type H for home Delivery");
+                //facade pattern in use
+            CarpetOrderFacade customerOrderFacade =
+                    new CarpetOrderFacade( new CarpetOrder(customerId, orderId, carpetId, con), new Delivery(false), new Packaging());
             customerOrderFacade.orderCarpet();
             System.out.println("Added to cart");
             System.out.println(customerOrderFacade);
             System.out.println("Do you want to add more carpets? Press Y to add more carpets or press any key word to no");
             String userChoice = scn.nextLine();
             if (!userChoice.equals("Y")) {
+                System.out.println("Type H for home Delivery");
+                String deliveryInput = scn.nextLine();
+                boolean homedelivery = false;
+                if(deliveryInput.equals("H")){
+                    homedelivery = true;
+                    customerOrderFacade.changetoHomeDelivery();
+                }
                 System.out.println("The items that in this order are:");
-                customerOrderFacade.displayCarpetsinOrder();
+                customerOrderFacade.deliver();
                 break;
             }
             carpetId = 0;

@@ -12,9 +12,11 @@ public class CarpetOrder{
 
 	CartTableActions cartTableAction;
 	int carpetId;
+	int customerId;
 	public CarpetOrder(int customerId, int orderId, int carpetId, Connection con){
 		this.carpetId = carpetId;
 		this.cartTableAction = new CartTableActions(con, customerId, orderId, carpetId);
+		this.customerId = customerId;
 	}
 
 	public void startOrder(){
@@ -22,8 +24,7 @@ public class CarpetOrder{
 	}
 
 	public void displayAllItemsInOrder(){
-		int orderId = this.cartTableAction.getOrderId();
-		ArrayList<Cart> carts = this.cartTableAction.getCartsFromOrderId(orderId);
+		ArrayList<Cart> carts = getAllItemsInOrder();
 		CommonList cartList = new CommonList(carts);
 		Iterator<Cart> cartListIterator = cartList.createIterator();
 
@@ -38,6 +39,9 @@ public class CarpetOrder{
 		return  carts;
 	}
 
+	public Customer getCustomerDetails(){
+		return cartTableAction.getCustomerFromCustomerID(customerId);
+	}
 
 	public String toString() {
 	  String details = String.valueOf(cartTableAction.getOrderdCarpet(carpetId));
