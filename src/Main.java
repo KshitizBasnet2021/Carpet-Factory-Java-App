@@ -7,6 +7,7 @@ public class Main {
                 new AuthenticationUI();
             }
             catch (Exception e){
+                System.out.println("An exception occurred!");
                 System.out.println(e);
             }
         }
