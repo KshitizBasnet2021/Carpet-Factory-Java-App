@@ -36,7 +36,7 @@ public class CarpetOrder{
 	public ArrayList<Cart> getAllItemsInOrder(){
 		int orderId = this.cartTableAction.getOrderId();
 		ArrayList<Cart> carts = this.cartTableAction.getCartsFromOrderId(orderId);
-		return  carts;
+		return carts;
 	}
 
 	public Customer getCustomerDetails(){

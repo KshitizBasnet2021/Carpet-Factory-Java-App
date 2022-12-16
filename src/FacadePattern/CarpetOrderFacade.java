@@ -1,8 +1,10 @@
 package FacadePattern;
 
 import Entities.Address;
+import Entities.Cart;
 import Entities.Customer;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 //sometimes searched carpet can be ordered or customized automatically for the future
@@ -39,7 +41,10 @@ public class CarpetOrderFacade {
         this.delivery.changeDelivery();
     }
 
-
+    //interface to getting all carts
+    public ArrayList<Cart> getAllCarts(){
+        return carpetOrder.getAllItemsInOrder();
+    }
     public String toString() {
         return carpetOrder.toString();
     }

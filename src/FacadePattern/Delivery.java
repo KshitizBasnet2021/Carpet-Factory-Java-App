@@ -18,7 +18,7 @@ public class Delivery {
             System.out.println("Home Delivery started");
             System.out.println("Customer and Address Details");
             System.out.println(customer);
-            System.out.println("Expected delivery date: 2-3 business days");
+            System.out.print("Expected delivery date: 2-3 business days");
         }
     }
     public void changeDelivery(){
